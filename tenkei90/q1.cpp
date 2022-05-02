@@ -1,7 +1,7 @@
 /*
 典型 001 https://atcoder.jp/contests/typical90/tasks/typical90_a
 
-g++ q1.cpp; ./a.out < input.txt
+g++ q1.cpp; ./a.out < inputs/q1.txt
 
 入力例
 ---

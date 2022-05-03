@@ -23,3 +23,41 @@ for i in range(H):
         # 行の合計値 + 列の合計値 - 要素の値
         dist.append(row_sums[i] + col_sums[j] - A[i][j])
     print(*dist)
+
+################################################################
+# 前処理の時間計測
+################################################################
+import timeit
+
+def f1():
+    row_sums = [sum(row) for row in A]
+    col_sums = [sum([row[i] for row in A]) for i in range(W)]
+
+def f2():
+    row_sums = [0] * H
+    col_sums = [0] * W
+    for i in range(H):
+        for j in range(W):
+            row_sums[i] += A[i][j]
+            col_sums[j] += A[i][j]
+
+def f3():
+    row_sums = []
+    col_sums = []
+    for i in range(H):
+        row_sums.append(sum(A[i]))
+        col_sums.append(sum([row[i] for row in A]))
+
+
+num = 100000
+t1 = timeit.timeit("f1()", globals=globals(), number=num)
+t2 = timeit.timeit("f2()", globals=globals(), number=num)
+t3 = timeit.timeit("f3()", globals=globals(), number=num)
+
+print('t1', t1)
+print('t2', t2)
+print('t3', t3)
+# t1 1.1044080010033213
+# t2 2.350258004007628
+# t3 1.1650754080037586
+

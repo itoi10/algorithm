@@ -3,6 +3,7 @@
 """
 # 全検索を行うがなるべく不要な計算を避ける
 # それでもPythonでは遅そうなのでnumbaを使ってみる
+# cf. (numbaでざっくりPython高速化)[https://qiita.com/gyu-don/items/9d223b007ca620e95abc]
 
 from numba import njit
 from sys import stdin
@@ -33,5 +34,4 @@ def main(N: int, A:int, B:int, C:int):
 if __name__ == "__main__":
     N = int(input())
     A, B, C = list(map(int, input().split()))
-
     main(N, A, B, C)

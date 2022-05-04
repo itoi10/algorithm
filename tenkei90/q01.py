@@ -1,6 +1,6 @@
 """
 典型 001 https://atcoder.jp/contests/typical90/tasks/typical90_a
-python q1.py < inputs/q1.txt
+python q1.py < inputs/q01.txt
 """
 N, L = map(int, input().split())
 K = int(input())

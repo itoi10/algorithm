@@ -24,6 +24,7 @@ for i in range(H):
         dist.append(row_sums[i] + col_sums[j] - A[i][j])
     print(*dist)
 
+
 ################################################################
 # 前処理の時間計測
 ################################################################
@@ -54,10 +55,9 @@ t1 = timeit.timeit("f1()", globals=globals(), number=num)
 t2 = timeit.timeit("f2()", globals=globals(), number=num)
 t3 = timeit.timeit("f3()", globals=globals(), number=num)
 
-print('t1', t1)
-print('t2', t2)
-print('t3', t3)
-# t1 1.1044080010033213
-# t2 2.350258004007628
-# t3 1.1650754080037586
-
+print('f1', t1)
+print('f2', t2)
+print('f3', t3)
+# f1 1.1285302890173625
+# f2 2.451951269991696
+# f3 1.2148397330020089

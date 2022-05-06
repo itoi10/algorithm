@@ -9,7 +9,7 @@ B = map(int, input().split())
 dif = sum([abs(a - b) for a, b in zip(A, B)])
 
 # K回に間に合って余分が偶数回ならYes
-if dif <= K and (K - dif) % 2 ==0:
+if dif <= K and (K - dif) % 2 == 0:
     print("Yes")
 else:
     print("No")

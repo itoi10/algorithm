@@ -3,6 +3,7 @@
 """
 
 from sys import stdin
+
 input = stdin.readline
 
 N = int(input())
@@ -27,6 +28,6 @@ for i in B:
             # 左に範囲を狭める
             right = mid
     # 差が小さい方を表示
-    dif1 = abs(A[left] - i) if left >= 0 else 2<<30
-    dif2 = abs(A[right] - i) if right < N else 2<<30
+    dif1 = abs(A[left] - i) if left >= 0 else 2 << 30
+    dif2 = abs(A[right] - i) if right < N else 2 << 30
     print(min(dif1, dif2))

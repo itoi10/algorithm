@@ -30,9 +30,11 @@ for i in range(H):
 ################################################################
 import timeit
 
+
 def f1():
     row_sums = [sum(row) for row in A]
     col_sums = [sum([row[i] for row in A]) for i in range(W)]
+
 
 def f2():
     row_sums = [0] * H
@@ -41,6 +43,7 @@ def f2():
         for j in range(W):
             row_sums[i] += A[i][j]
             col_sums[j] += A[i][j]
+
 
 def f3():
     row_sums = []
@@ -55,9 +58,9 @@ t1 = timeit.timeit("f1()", globals=globals(), number=num)
 t2 = timeit.timeit("f2()", globals=globals(), number=num)
 t3 = timeit.timeit("f3()", globals=globals(), number=num)
 
-print('f1', t1)
-print('f2', t2)
-print('f3', t3)
+print("f1", t1)
+print("f2", t2)
+print("f3", t3)
 # f1 1.1285302890173625
 # f2 2.451951269991696
 # f3 1.2148397330020089

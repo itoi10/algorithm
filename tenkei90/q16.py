@@ -7,19 +7,21 @@
 
 from numba import njit
 from sys import stdin
+
 input = stdin.readline
 
+
 @njit(cache=True)
-def main(N: int, A:int, B:int, C:int):
+def main(N: int, A: int, B: int, C: int):
     MAX_COIN = 9999
 
     rslt = MAX_COIN
-    for i in range(MAX_COIN+1):
+    for i in range(MAX_COIN + 1):
         # この時点でNを超えていたら計算終了
         s1 = A * i
         if s1 > N:
             break
-        for j in range(MAX_COIN+1):
+        for j in range(MAX_COIN + 1):
             s2 = s1 + B * j
             # j計算終了
             if s2 > N:
@@ -28,8 +30,9 @@ def main(N: int, A:int, B:int, C:int):
             if (N - s2) % C == 0:
                 k = (N - s2) // C
                 # 最も小さい値が答え
-                rslt = min(i+j+k, rslt)
+                rslt = min(i + j + k, rslt)
     print(rslt)
+
 
 if __name__ == "__main__":
     N = int(input())

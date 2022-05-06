@@ -8,12 +8,13 @@
 
 from typing import List, Tuple
 from collections import deque
+
 # pop操作計算量  list O(n), deque O(1)
 # cf. (Python: deque vs. list)[https://dev.to/v_it_aly/python-deque-vs-listwh-25i9]
 
 
 def bfs(tree: List[List[int]], start: int) -> Tuple[int, int]:
-    """ 幅優先探索を行い,最も深い点の番号と深さを返す　"""
+    """幅優先探索を行い,最も深い点の番号と深さを返す"""
 
     # キューに探索開始点追加
     que = deque()
@@ -31,7 +32,7 @@ def bfs(tree: List[List[int]], start: int) -> Tuple[int, int]:
         pos = que.popleft()
         # 接続点を順番にチェック
         for to in tree[pos]:
-            
+
             # 未訪問の点?
             if dist[to] == -1:
                 # 深さを設定してキューに追加
@@ -45,21 +46,22 @@ def bfs(tree: List[List[int]], start: int) -> Tuple[int, int]:
     # 最も深い点の番号, 深さ
     return deepest_idx, dist[deepest_idx]
 
+
 if __name__ == "__main__":
     N = int(input())
 
     # n番目の要素に点nから接続している点のリストを格納
     TREE: List[List[int]] = [[] for _ in range(N)]
-    for _ in range(N-1):
-        A, B = map(lambda x: x-1, map(int, input().split()))
-        TREE[A].append(B) # 点Aiの接続リストにBi追加
-        TREE[B].append(A) # 点Biの接続リストにAi追加
-    
+    for _ in range(N - 1):
+        A, B = map(lambda x: x - 1, map(int, input().split()))
+        TREE[A].append(B)  # 点Aiの接続リストにBi追加
+        TREE[B].append(A)  # 点Biの接続リストにAi追加
+
     # BFS 1回目. とりあえず0番目から開始
     idx, _ = bfs(TREE, 0)
 
     # BSF 2回目. 1回目で取得した点から開始すれば木の直径が求められる
     _, val = bfs(TREE, idx)
-    
+
     rslt = val + 1
     print(rslt)

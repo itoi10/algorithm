@@ -3,6 +3,7 @@
 """
 
 from sys import stdin
+
 input = stdin.readline
 
 N = int(input())
@@ -16,7 +17,7 @@ S = [input().rstrip("\n") for _ in range(N)]
 # for i in range(N):
 #     if S[i] not in registered:
 #        registered.append(S[i])
-#        print(i+1) 
+#        print(i+1)
 
 
 # 辞書を使えば要素の参照が高速に行える
@@ -24,4 +25,4 @@ name_dict = {}
 for i in range(N):
     if not name_dict.get(S[i]):
         name_dict[S[i]] = 1
-        print(i+1)
+        print(i + 1)

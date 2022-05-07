@@ -23,7 +23,7 @@ LRV = [list(map(int, input().split())) for _ in range(Q)]
 
 
 # 変化があった区画の階差を求めればAのl〜rまでいちいち更新しなくて良い
-diffs = [A[i+1] - A[i] for i in range(N-1)]
+diffs = [A[i + 1] - A[i] for i in range(N - 1)]
 inconv = sum([abs(n) for n in diffs])
 
 for l, r, v in LRV:
@@ -31,10 +31,10 @@ for l, r, v in LRV:
     r -= 1
     if l != 0:
         # 左側の不便さ増減
-        before = diffs[l-1]
-        diffs[l-1] += v
-        inconv += -abs(before) + abs(diffs[l-1])
-    if r != N-1:
+        before = diffs[l - 1]
+        diffs[l - 1] += v
+        inconv += -abs(before) + abs(diffs[l - 1])
+    if r != N - 1:
         # 右側の不便さ増減
         before = diffs[r]
         diffs[r] -= v

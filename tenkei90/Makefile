@@ -1,4 +1,4 @@
-# $ make run q=01
+# $ make q=01
 q := 
 
 run:

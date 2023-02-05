@@ -1,0 +1,12 @@
+{
+    "clang.executable": "clang++",
+    "code-runner.runInTerminal": true,
+    "clang.cxxflags": [ "-std=c++14"],
+    "code-runner.executorMap": {
+      "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+      "cpp": "cd $dir && g++ -O2 -std=c++14 $fileName && ./a.out",
+    },
+    "[cpp]": {
+      "editor.defaultFormatter": "ms-vscode.cpptools"
+    }
+}

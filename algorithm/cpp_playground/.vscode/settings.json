@@ -8,5 +8,15 @@
     },
     "[cpp]": {
       "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "files.associations": {
+      "barrier": "cpp",
+      "chrono": "cpp",
+      "latch": "cpp",
+      "limits": "cpp",
+      "random": "cpp",
+      "semaphore": "cpp",
+      "valarray": "cpp",
+      "algorithm": "cpp"
     }
 }

@@ -17,6 +17,7 @@
       "random": "cpp",
       "semaphore": "cpp",
       "valarray": "cpp",
-      "algorithm": "cpp"
+      "algorithm": "cpp",
+      "queue": "cpp"
     }
 }

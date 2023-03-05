@@ -28,7 +28,6 @@ try:
         messages.append({"role": "assistant", "content": assistant_message})
 
         print(assistant_message)
-        time.sleep(1)
 
 
 except Exception as e:

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/css/uikit.min.css" />
+  <!-- React CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <title>テスト</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- $ python -m http.server -->
+
+  <script type="text/babel">
+
+    function App() {
+
+      const ENDPOINT = ''
+
+      const [msgs, setMsgs] = React.useState([
+        // {'role': 'user', 'msg': 'Hello'},
+      ]);
+
+      const [isTyping, setIsTyping] = React.useState(false);
+
+
+
+      // Enterキーを押したときの処理
+      function handleKeyDown(e) {
+        if (e.key === 'Enter' && !isTyping && e.target.value !== "") {
+          const msg = e.target.value;
+          e.target.value = '';
+          setMsgs([...msgs, {'role': 'user', 'msg': msg}]);
+        }
+      }
+
+      // RESETボタンを押したときの処理
+      function handleReset() {
+        setMsgs([]);
+      }
+
+      return (
+        <div class="uk-container">
+          <table class="uk-table">
+            <thead>
+              <tr>
+                <th class="uk-table-shrink"></th>
+                <th class="uk-table-expand"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {msgs.map((msg) => {
+                return (
+                  <tr>
+                    <th>{msg.role == 'user' ? 'You' : 'AI'}</th>
+                    <td>{msg.msg}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          <input
+            class="uk-input" type="text"
+            onKeyDown={handleKeyDown}
+            // 日本語変換のときにEnterキーを押しても反応しないようにする
+            onCompositionStart={() => setIsTyping(true)}
+            onCompositionEnd={() => setIsTyping(false)}
+          />
+          <button class="uk-button" onClick={handleReset} >RESET</button>
+        </div>
+      )
+    }
+
+    const container = document.getElementById("root");
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+
+  </script>
+</body>
+</html>

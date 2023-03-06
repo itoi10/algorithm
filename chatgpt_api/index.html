@@ -19,28 +19,42 @@
 
     function App() {
 
-      const ENDPOINT = ''
+      const ENDPOINT = '<APIのURL>'
 
-      const [msgs, setMsgs] = React.useState([
-        // {'role': 'user', 'msg': 'Hello'},
-      ]);
+      // メッセージ履歴を保持する変数
+      const [messages, setMessages] = React.useState([]);
 
+      // 日本語変換のときにEnterキーを押しても反応しないようにするための変数
       const [isTyping, setIsTyping] = React.useState(false);
 
 
-
       // Enterキーを押したときの処理
-      function handleKeyDown(e) {
+      async function handleKeyDown(e) {
         if (e.key === 'Enter' && !isTyping && e.target.value !== "") {
           const msg = e.target.value;
           e.target.value = '';
-          setMsgs([...msgs, {'role': 'user', 'msg': msg}]);
+
+          // ユーザーの発言をmessagesに追加
+          const newMsgs = [...messages, {'role': 'user', 'content': msg}]
+          setMessages(newMsgs);
+
+          // APIにリクエストを送信
+          const rsp = await fetch(ENDPOINT, {
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({'messages': newMsgs})
+          })
+          const data = await rsp.json()
+          console.log(data)
+
+          // AIの発言をmessagesに追加
+          setMessages(data.messages);
         }
       }
 
       // RESETボタンを押したときの処理
       function handleReset() {
-        setMsgs([]);
+        setMessages([]);
       }
 
       return (
@@ -53,11 +67,11 @@
               </tr>
             </thead>
             <tbody>
-              {msgs.map((msg) => {
+              {messages.map((msg) => {
                 return (
                   <tr>
                     <th>{msg.role == 'user' ? 'You' : 'AI'}</th>
-                    <td>{msg.msg}</td>
+                    <td>{msg.content}</td>
                   </tr>
                 )
               })}

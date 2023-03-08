@@ -2,19 +2,22 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <!-- UIkit CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.3/dist/css/uikit.min.css" />
-  <!-- React CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/css/uikit.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.4/dist/js/uikit-icons.min.js"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <title>ChatGPTクライアント</title>
+  <title>クライアント</title>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
     function App() {
-      const ENDPOINT = '<API_GatewayのURL>' // API Gatewayのエンドポイント
+      // APIエンドポイント
+      const ENDPOINT = 'http://localhost:8000' // ローカル環境
+      // const ENDPOINT = '<デプロイしたAPIのURL>' // デプロイ環境
+
       const [messages, setMessages] = React.useState([]); // メッセージ履歴を保持する変数
       const [isTyping, setIsTyping] = React.useState(false); // 日本語変換のときにEnterキーを押しても反応しないようにするための変数
       const [errorMsg, setErrorMsg] = React.useState(''); // エラーメッセージを保持する変数
@@ -36,44 +39,55 @@
           })
           const data = await response.json();
 
+          if ('error' in data) {
+            setErrorMsg("APIからエラーが返されました。" + data.error);
+            return;
+          }
+
           // AIの発言をmessagesに追加
           setMessages(data.messages);
           setErrorMsg('');
+
         } catch (error) {
-          setErrorMsg("APIリクエストでエラーが発生しました。");
+          setErrorMsg("API通信中にエラーが発生しました。");
         }
       }
 
-      function handleReset() {
+      function resetMessages() {
         setMessages([]);
+        setErrorMsg('');
       }
 
       return (
         <div class="uk-container">
-          <table class="uk-table">
+          <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
             <thead>
               <tr>
-                <th class="uk-table-shrink"></th>
-                <th class="uk-table-expand"></th>
+                <th class="uk-table-shrink">　</th>
+                <th class="uk-table-expand">　</th>
               </tr>
             </thead>
             <tbody>
               {messages.map((msg, i) =>
                   <tr key={i}>
-                    <th>{msg.role == 'user' ? 'You' : 'AI'}</th>
+                    <td uk-icon={msg.role === 'user' ? "icon: user" : "icon: happy"}></td>
                     <td>{msg.content}</td>
                   </tr>
               )}
             </tbody>
           </table>
-          <input
-            class="uk-input" type="text"
-            onKeyDown={handleKeyDown}
-            onCompositionStart={() => setIsTyping(true)}
-            onCompositionEnd={() => setIsTyping(false)}
-          />
-          <button class="uk-button" onClick={handleReset}>RESET</button>
-          {errorMsg !== "" && <div class="uk-alert-danger" uk-alert>{errorMsg}</div>}
+          <div class="uk-margin">
+            {errorMsg !== "" && <div class="uk-alert-danger" uk-alert>{errorMsg}</div>}
+            <div class="uk-flex">
+              <input
+                class="uk-input" type="text"
+                onKeyDown={handleKeyDown}
+                onCompositionStart={() => setIsTyping(true)}
+                onCompositionEnd={() => setIsTyping(false)}
+              />
+              <button class="uk-button" onClick={resetMessages}>RESET</button>
+            </div>
+          </div>
         </div>
       )
     }

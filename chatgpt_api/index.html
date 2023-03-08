@@ -8,51 +8,42 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <title>テスト</title>
+  <title>ChatGPTクライアント</title>
 </head>
 <body>
   <div id="root"></div>
-
-  <!-- $ python -m http.server -->
-
   <script type="text/babel">
-
     function App() {
+      const ENDPOINT = '<API_GatewayのURL>' // API Gatewayのエンドポイント
+      const [messages, setMessages] = React.useState([]); // メッセージ履歴を保持する変数
+      const [isTyping, setIsTyping] = React.useState(false); // 日本語変換のときにEnterキーを押しても反応しないようにするための変数
+      const [errorMsg, setErrorMsg] = React.useState(''); // エラーメッセージを保持する変数
 
-      const ENDPOINT = '<APIのURL>'
-
-      // メッセージ履歴を保持する変数
-      const [messages, setMessages] = React.useState([]);
-
-      // 日本語変換のときにEnterキーを押しても反応しないようにするための変数
-      const [isTyping, setIsTyping] = React.useState(false);
-
-
-      // Enterキーを押したときの処理
       async function handleKeyDown(e) {
-        if (e.key === 'Enter' && !isTyping && e.target.value !== "") {
-          const msg = e.target.value;
-          e.target.value = '';
+        if (e.key !== 'Enter' || e.target.value === "" || isTyping) return;
 
-          // ユーザーの発言をmessagesに追加
-          const newMsgs = [...messages, {'role': 'user', 'content': msg}]
-          setMessages(newMsgs);
+        // ユーザーの発言をmessagesに追加
+        const newMessages = [...messages, {'role': 'user', 'content': e.target.value}]
+        setMessages(newMessages);
+        e.target.value = '';
 
+        try {
           // APIにリクエストを送信
-          const rsp = await fetch(ENDPOINT, {
+          const response = await fetch(ENDPOINT, {
             method:'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({'messages': newMsgs})
+            body: JSON.stringify({'messages': newMessages})
           })
-          const data = await rsp.json()
-          console.log(data)
+          const data = await response.json();
 
           // AIの発言をmessagesに追加
           setMessages(data.messages);
+          setErrorMsg('');
+        } catch (error) {
+          setErrorMsg("APIリクエストでエラーが発生しました。");
         }
       }
 
-      // RESETボタンを押したときの処理
       function handleReset() {
         setMessages([]);
       }
@@ -67,32 +58,31 @@
               </tr>
             </thead>
             <tbody>
-              {messages.map((msg) => {
-                return (
-                  <tr>
+              {messages.map((msg, i) =>
+                  <tr key={i}>
                     <th>{msg.role == 'user' ? 'You' : 'AI'}</th>
                     <td>{msg.content}</td>
                   </tr>
-                )
-              })}
+              )}
             </tbody>
           </table>
           <input
             class="uk-input" type="text"
             onKeyDown={handleKeyDown}
-            // 日本語変換のときにEnterキーを押しても反応しないようにする
             onCompositionStart={() => setIsTyping(true)}
             onCompositionEnd={() => setIsTyping(false)}
           />
-          <button class="uk-button" onClick={handleReset} >RESET</button>
+          <button class="uk-button" onClick={handleReset}>RESET</button>
+          {errorMsg !== "" && <div class="uk-alert-danger" uk-alert>{errorMsg}</div>}
         </div>
       )
     }
 
-    const container = document.getElementById("root");
-    const root = ReactDOM.createRoot(container);
-    root.render(<App />);
-
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    );
   </script>
+
 </body>
 </html>

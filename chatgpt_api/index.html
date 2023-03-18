@@ -32,7 +32,7 @@
 
         try {
           // APIにリクエストを送信
-          const response = await fetch(ENDPOINT, {
+          const response = await fetch(ENDPOINT + '/chat', {
             method:'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({'messages': newMessages})
@@ -45,7 +45,7 @@
           }
 
           // AIの発言をmessagesに追加
-          setMessages(data.messages);
+          setMessages(data.result);
           setErrorMsg('');
 
         } catch (error) {
@@ -69,10 +69,10 @@
             </thead>
             <tbody>
               {messages.map((msg, i) =>
-                  <tr key={i}>
-                    <td uk-icon={msg.role === 'user' ? "icon: user" : "icon: happy"}></td>
-                    <td>{msg.content}</td>
-                  </tr>
+                <tr key={i}>
+                  <td uk-icon={msg.role === 'user' ? "icon: user" : "icon: happy"}></td>
+                  <td>{msg.content}</td>
+                </tr>
               )}
             </tbody>
           </table>
